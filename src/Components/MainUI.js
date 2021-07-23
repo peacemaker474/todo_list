@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ToDoList from '../Functions/ToDoList';
 import AddList from '../Functions/AddList';
 import EditList from '../Functions/EditList';
-import { ListContext } from './App';
+import FnToDoList from '../Functions/FnToDoList';
 
 // 스타일 영역
 const Main = styled.main`
@@ -23,13 +23,14 @@ const Title = styled.h1`
 `;
 
 const MainUI = () => {
-    const {modalEdit} = useContext(ListContext);
+    const [modalEdit, setModalEdit] = useState(false);
     return (
         <Main>
             <Title>MY TODO LIST</Title>
             <AddList />
-            <ToDoList />
-            {modalEdit ? <EditList /> : null}
+            <ToDoList modalEdit={modalEdit} setModalEdit={setModalEdit} />
+            {modalEdit ? <EditList setModalEdit={setModalEdit} /> : null}
+            <FnToDoList />
         </Main>
     )
 }

@@ -22,8 +22,8 @@ const Input = styled.input`
     border-radius: 5px;
 `;
 
-const EditList = () => {
-    const {toDoList, setToDoList, editList, setModalEdit} = useContext(ListContext);
+const EditList = ({setModalEdit}) => {
+    const {toDoList, setToDoList, editList} = useContext(ListContext);
 
     const handleEditList = (event) => {
         event.preventDefault();

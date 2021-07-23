@@ -15,8 +15,22 @@ const Lists = styled.li`
 const BtnBox = styled.div`
 `;
 
-const ShowList = () => {
-    const {toDoList, setToDoList, modalEdit, setModalEdit, setEditList} = useContext(ListContext);
+const ShowList = ({modalEdit, setModalEdit}) => {
+    const {toDoList, setToDoList, setEditList, fnToDoList, setFnToDoList} = useContext(ListContext);
+
+    const handleFinishedList = (event) => {
+        const {target : {
+            parentNode: {
+                parentNode
+            }
+        }} = event;
+        const copyData = [...toDoList];
+        const fnData = copyData.filter(item => item.id === parseInt(parentNode.id));
+        const restData = copyData.filter(item => item.id !== parseInt(parentNode.id));
+        const finishList = [...fnToDoList, ...fnData];
+        setFnToDoList(finishList);
+        setToDoList(restData);
+    }
 
     const handleEditList = (event) => {
         setEditList(null);
@@ -50,6 +64,7 @@ const ShowList = () => {
                     <BtnBox>
                         <button onClick={handleDeleteList}>삭제</button>
                         <button onClick={handleEditList}>수정</button>
+                        <button onClick={handleFinishedList}>완료</button>
                     </BtnBox>
                 </Lists>
             )}
