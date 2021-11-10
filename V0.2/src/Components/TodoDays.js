@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import AddModal from './AddModal';
 
 const LayerTodo = styled.section`
     width: 90%;
@@ -46,36 +47,34 @@ const AddButton = styled.button`
     right: 2%;
 `;
 
-const ModalForm = styled.form`
+const Lists = styled.ul`
     width: 100%;
-    height: 10%;
-    position: absolute;
-    bottom: 2%;
-    left: 4%;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
 `;
 
-const ModalInput = styled.input`
-    all: unset;
+const TodoList = styled.li`
     width: 90%;
-    height: 100%;
-    font-size: 1.4rem;
-    padding-left: 5px;
+    font-size: 1.2rem;
+    margin: 0px auto;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-evenly;
 `;
 
-const Test = styled.ul`
-    width: 100%;
-    height: 10%;
+const ToDo = styled.span`
+    font-size: 1.2rem;
+    width: 90%;
+    padding: 8px 0;
 `;
 
-const TestLi = styled.li`
-
+const DeleteBtn = styled.button`
+    all: unset;
+    width: 5%;
+    height: 5%;
+    padding: 8px 0;
 `;
-
-const ModalComponent = ({onSubmit, id}) => (
-    <ModalForm id={id} onSubmit={onSubmit}>
-        <ModalInput placeholder="할일을 입력하세요" type="text" />
-    </ModalForm>
-)
 
 const TodoDays = () => {
     const [addModal, setAddModal] = useState(true);
@@ -124,31 +123,25 @@ const TodoDays = () => {
         ]
     );
 
-    const handleAddToDoList = evt => {
-        setAddModal(!addModal);
-    }
-
-    const onSubmit = evt => {
-        evt.preventDefault();
-        todoList.forEach(item => {
-            if (item.day === evt.target.id) {
-                item.list.push(evt.target.lastChild.value);
-            }
-        });
-        setAddModal(true);
-    }
-
     return (
         <LayerTodo>
             {todoList.map(item => (
                 <LayerDays key={item.id}>
                     <DaysTitle> {item.day} </DaysTitle>
-                    <Test>
+                    <Lists>
                         {item.list && item.list.map(date => (
-                            <TestLi> {date} </TestLi>
+                            <>
+                                <TodoList id={item.day}> 
+                                    <ToDo> {date} </ToDo>
+                                    <DeleteBtn type="button" > ❌ </DeleteBtn>
+                                </TodoList>
+                            </>
                         ))}
-                    </Test>
-                    {addModal ? <AddButton id={item.day} type="button" onClick={handleAddToDoList}> ➕ </AddButton> : <ModalComponent id={item.day} onSubmit={onSubmit}/> }
+                    </Lists>
+                    {addModal ? 
+                        <AddButton type="button"> ➕ </AddButton> 
+                        : <AddModal /> 
+                    }
                 </LayerDays>
             ))}
         </LayerTodo>
